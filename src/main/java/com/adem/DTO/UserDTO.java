@@ -41,7 +41,7 @@ public class UserDTO {
 
 	private Set<String> roles;
 
-//Role type String e cevirecegim // Role user a donmesin
+	//Warum sollte der Benutzer meine Rollen kennen?
 	public void setRoles(Set<Role> roles) {
 		Set<String> rolesStr = new HashSet<>();
 

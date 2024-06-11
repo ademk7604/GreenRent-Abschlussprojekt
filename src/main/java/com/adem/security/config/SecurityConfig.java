@@ -37,13 +37,12 @@ public class SecurityConfig {
 	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	        return http.csrf(AbstractHttpConfigurer::disable)
 	                .authorizeHttpRequests(auth->{
-	                    auth.requestMatchers("/"
-		                         ,"images/**"
-		                         ,"users/**"
-		                         ,"login"
+	                    auth.requestMatchers(
+		                         "/images**"
+		                         ,"/user/**"
+		                         ,"/login"
 		                         ,"/register/**"
-		                         ,"/js"
-		                         ,"/css").permitAll()
+		                         ).permitAll()
 	                            .anyRequest().authenticated();
 	                })
 	                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -66,33 +65,6 @@ public class SecurityConfig {
    			}
    		};
    	}
-    
-//    //*******************SWAGGER***********************
-//    
-//    private static final String [] AUTH_WHITE_LIST= {
-//			"/v3/api-docs/**", // swagger
-//			"swagger-ui.html", //swagger
-//			"/swagger-ui/**", // swagger
-//			"/",
-//			"index.html",
-//			"/images/**",
-//			"/css/**",
-//			"/js/**"
-//	};
-//
-//	// yukardaki static listeyi de giriş izni veriyoruz, boiler plate
-//    @Bean
-//	public WebSecurityCustomizer webSecurityCustomizer() {
-//		WebSecurityCustomizer customizer=new WebSecurityCustomizer() {
-//			@Override
-//			public void customize(WebSecurity web) {
-//				web.ignoring().requestMatchers(AUTH_WHITE_LIST);
-//			}
-//		};
-//		return customizer;
-//	}
-
-    
 
     
     

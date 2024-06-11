@@ -47,8 +47,6 @@ public class UserService {
 		this.passwordEncoder = passwordEncoder;
 		this.jwtUtils = jwtUtils;
 		this.userService = userService;
-		
-
 	}
 
 	// ------------------ get current user ------------------------
@@ -68,27 +66,15 @@ public class UserService {
 
 	}
 
-// -------------------  get user by id --------------
-	public UserDTO getUserById(Long id) {
-
-		User user = userRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException(String.format(ErrorMessage.USER_NOT_FOUND_MESSAGE, id)));
-
-		UserDTO userDTO = userMapper.userToUserDto(user);
-		return userDTO;
-
-	}
-
 
 	// --------------------get user profile------------------------
 	public UserDTO findUserProfile() {
 
 		User user = getCurrentUser();
-		
 		if (user == null) {
 			throw new ResourceNotFoundException(String.format(ErrorMessage.USER_NOT_FOUND_MESSAGE, user));
-
 		}
+		
 		Role role = roleService.findByType(RoleType.ROLE_CUSTOMER);
 
 		Set<Role> roles = new HashSet<>();
@@ -99,19 +85,17 @@ public class UserService {
         user.setCreateAt(LocalDateTime.now());
 		UserDTO userDTO = userMapper.userToUserDto(user);
 		return userDTO;
-
 	}
 
 	//---------------get all users-----------------
 	public List<UserDTO> getAllUsers(){
-		List<User> users=userRepository.findAll();
+		List<User> users = userRepository.findAll();
 		return userMapper.userListToUserDTOList(users);
 	}
 
 	//--------------update user-------------------
 	public void updateUser(UpdateUserRequest updateUserRequest) {
 		User user=userService.getCurrentUser();
-
 		if ((user == null)) {
 			new ResourceNotFoundException(String.format(ErrorMessage.EMAIL_IS_NOT_MATCH));
 
@@ -121,7 +105,7 @@ public class UserService {
 		Set<Role> roles = new HashSet<>();
 		
 		String encodedPassword = passwordEncoder.encode(updateUserRequest.getPassword());
-		
+	
 		roles.add(role);
 		user.setRoles(roles);
 		user.setUpdateAt(LocalDateTime.now());
@@ -131,7 +115,6 @@ public class UserService {
 		user.setPhone(updateUserRequest.getPhone());
 		user.setPassword(encodedPassword);
 		userRepository.save(user);
-
 	}
 
 	// ---------------- register user----------------------
@@ -164,17 +147,13 @@ public class UserService {
 
 	}
 
-
-
 	public void deleteUserWithId(Long id) {
 
 		userRepository.deleteById(id);
-
 	}
 
 //------------- find user by email-------------------
 	public User getUserByEmail(String email) {
-
 		User user = userRepository.findByEmail(email).orElseThrow(
 				() -> new ResourceNotFoundException(String.format(ErrorMessage.USER_NOT_FOUND_MESSAGE, email)));
 		return user;
