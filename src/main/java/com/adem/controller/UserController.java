@@ -38,5 +38,7 @@ public class UserController {
 		UserDTO userDTO = userService.getPrincipal();
 		return ResponseEntity.ok(userDTO);
 	}
+	
+	 
 
 }
