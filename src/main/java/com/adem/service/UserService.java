@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -91,6 +94,18 @@ public class UserService {
 	public List<UserDTO> getAllUsers(){
 		List<User> users = userRepository.findAll();
 		return userMapper.userListToUserDTOList(users);
+	}
+	
+	public Page<UserDTO> getUserPage(Pageable pageable){
+		Page<User> users= userRepository.findAll(pageable);
+		Page<UserDTO> dtoPage = users.map(new Function<User, UserDTO>(){
+			
+			@Override
+			public UserDTO apply(User user) {
+				return userMapper.userToUserDto(user);
+			}
+		});
+		return dtoPage;
 	}
 
 	//--------------update user-------------------
